@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>Mobile Web Map</title>
+		<meta name="author" content="Florian Herbst" />
+		<meta name="description" Content="Forest Map" />
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <link rel="stylesheet" href="style_forest_map.css" type="text/css">
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+
+        <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+		<script src="Districts_Salzburg.js" text="javascript"></script>
+        <script src="waldflaechen_clip.js" text="javascript"> // link to this resource: https://www.data.gv.at/katalog/dataset/waldflachen-aus-orthofotos-1-50-000-land-salzburg#resources</script>
+        
+    </head>
+
+    <body>
+    <div id="header"><p>Forest Web Map ::: Florian Herbst</p></div>
+    <div id="map"></div>
+    <div id="footer"></div>
+    <div id="mapid"></div>
+
+
+    <script type="text/javascript">
+            
+	// MAP	
+        var map = L.map('map').setView([47.87133511763412, 13.036025484614159], 11);
+
+        // Basemaps
+        var osm = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: '© OpenStreetMap'}).addTo(map);
+
+        var osmHOT = L.tileLayer('https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: '© OpenStreetMap contributors, Tiles style by Humanitarian OpenStreetMap Team hosted by OpenStreetMap France'});
+
+        var openTopoMap = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: 'Map data: © OpenStreetMap contributors, SRTM | Map style: © OpenTopoMap (CC-BY-SA)'
+        });
+
+
+    // DATA
+        // POIs
+        var naturpark_salzachauen = L.marker([47.88356399192677, 12.988544520092109]);
+        var festung = L.marker([47.79497163608428, 13.047646915205696]);
+        var techno_z = L.marker([47.823325780908505, 13.04014769188163]);
+
+        // forested areas
+        var myForestStyle = {
+            color: "#D34137",
+            weight: 5,
+            opacity: 0.65
+        }
+
+        waldflaechen = L.geoJson(waldgebiete, {
+            style: myForestStyle,
+            onEachFeature: interactiveFunction
+        }); 
+
+
+
+    // POPUPS
+    naturpark_salzachauen.bindPopup("<b>Naturpark Salzachauen</b><br>Naherholung</br>");
+    festung.bindPopup("<b>Festung Hohensalzburg</b><br>Sehenswürdigkeit</br>");
+    techno_z.bindPopup("<b>Techno Z</b><br>Z-GIS</br>");
+        
+
+    // LAYERGROUPS
+    var pois = L.layerGroup([festung, techno_z, naturpark_salzachauen]).addTo(map);
+    var waldgebiete = L.layerGroup([waldflaechen]).addTo(map);
+    
+
+    // LAYER CONTROL
+        // grouping into base maps and overlay maps
+        // styling the layer control appearences of the individual basemaps
+    var baseMaps = {
+    "OpenStreetMap": osm,
+    "<span style='color: red'>OpenStreetMap.HOT</span>": osmHOT,
+    "<span style='color: green'>OpenTopoMap.HOT</span>": openTopoMap
+    };
+
+    var overlayMaps = {
+        "Waldgebiete": waldgebiete,
+        "POIs" : pois
+    };
+
+    var layerControl = L.control.layers(baseMaps, overlayMaps).addTo(map);
+
+    // adding a scale bar
+    L.control.scale({position:'topleft',imperial:true}).addTo(map);
+
+
+
+        // adding the functionality to zoom to the features when double-clicking it
+        // and highlighting it when hovering the mouse over it
+        
+        
+        function highlightFeature(e) {
+            var activefeature = e.target;  //access to activefeature that was hovered over through e.target
+            
+            activefeature.setStyle({
+                weight: 5,
+                color: '#666',
+                dashArray: '',
+                fillOpacity: 0.7
+            });
+            if (!L.Browser.ie && !L.Browser.opera) {
+            activefeature.bringToFront();
+            }
+        }
+        //function for resetting the highlight
+        function resetHighlight(e) {
+            waldflaechen.resetStyle(e.target);
+        }
+
+        function zoomToFeature(e) {
+            map.fitBounds(e.target.getBounds());
+        }
+
+        //to call these methods we need to add listeners to our features
+
+        function interactiveFunction(feature, layer) {
+            layer.on({
+                mouseover: highlightFeature,
+                mouseout: resetHighlight,
+                doubleclick: zoomToFeature
+        } );
+        }
+
+        // LEGEND        
+        var legend = L.control({ position: "bottomright" });
+
+        legend.onAdd = function(map) {
+        var div = L.DomUtil.create("div", "legend");
+        div.innerHTML += "<h4>Legende</h4>";
+        div.innerHTML += '<i style="background: #477AC2"></i><span>Points of Interest</span><br>';
+        div.innerHTML += '<i style="background: #D34137"></i><span>Forest</span><br>';
+        // div.innerHTML += '<i style="background: #E6E696"></i><span>Land</span><br>';
+        // div.innerHTML += '<i style="background: #E8E6E0"></i><span>Residential</span><br>';
+        // div.innerHTML += '<i style="background: #FFFFFF"></i><span>Ice</span><br>';
+        // div.innerHTML += '<i class="icon" style="background-image: url(https://d30y9cdsu7xlg0.cloudfront.net/png/194515-200.png);background-repeat: no-repeat;"></i><span>Grenze</span><br>';
+        
+        return div;
+        };
+
+        legend.addTo(map);
+
+    </script>
+
+    </body>
+
+</html>
