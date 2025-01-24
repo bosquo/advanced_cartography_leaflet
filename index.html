@@ -45,7 +45,11 @@
         // POIs
         var naturpark_salzachauen = L.marker([47.88356399192677, 12.988544520092109]);
         var festung = L.marker([47.79497163608428, 13.047646915205696]);
-        var techno_z = L.marker([47.823325780908505, 13.04014769188163]);
+        var kapuziner = L.marker([47.805119541397794, 13.058931597520946]);
+        var park = L.marker([47.82136175509967, 13.031301704025777]);
+        var gais = L.marker([47.80305120475575, 13.109911701071672])
+        var maria = L.marker([47.83849569728265, 13.039745948944029])
+        var antheringer_au = L.marker([47.89937581006342, 12.974055440121766])
 
         // forested areas
         var myForestStyle = {
@@ -64,11 +68,15 @@
     // POPUPS
     naturpark_salzachauen.bindPopup("<b>Naturpark Salzachauen</b><br>Naherholung</br>");
     festung.bindPopup("<b>Festung Hohensalzburg</b><br>Sehenswürdigkeit</br>");
-    techno_z.bindPopup("<b>Techno Z</b><br>Z-GIS</br>");
+    kapuziner.bindPopup("<b>Franziskischlössl</b><br>Sehenswürdigkeit</br>");
+    park.bindPopup("<b>Glanspitzpark</b><br>Naherholung</br>")
+    gais.bindPopup("<b>Gaisbergspitze</b><br>Viewpoint</br>")
+    maria.bindPopup("<b>Maria Plain</b><br>Sehenswürdigkeit</br>")
+    antheringer_au.bindPopup("<b>Antheringer Au</b><br>Naherholung</br>")
         
 
     // LAYERGROUPS
-    var pois = L.layerGroup([festung, techno_z, naturpark_salzachauen]).addTo(map);
+    var pois = L.layerGroup([festung, kapuziner, naturpark_salzachauen, park, gais, maria, antheringer_au]).addTo(map);
     var waldgebiete = L.layerGroup([waldflaechen]).addTo(map);
     
 
@@ -152,3 +160,4 @@
     </body>
 
 </html>
+
