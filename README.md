@@ -10,4 +10,4 @@ This interactive web map is not for scientific purposes.
 It is for recreational use only.
 It serves as a guide for all forest lovers and outdoor enthusiasts that like to explore our local forests and recreation areas.
 
-Whether you want to browse for mushrooms, walk your dag, show your children the local forests, or just roam around on your own... This map is for you!
+Whether you want to browse for mushrooms, walk your dog, show your children the local forests, or just roam around on your own... This map is for you!
