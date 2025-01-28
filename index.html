@@ -1,16 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
 	<head>
-		<title>Mobile Web Map</title>
-		<meta name="author" content="Florian Herbst" />
-		<meta name="description" Content="Forest Map" />
-		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <!--Title of the map in the url and metadata-->
+	<title>Mobile Web Map</title>
+	<meta name="author" content="Florian Herbst" />
+	<meta name="description" Content="Forest Map for recreational purposes." />
+        <meta name="keywords" content="HTML, CSS, JavaScript, Forest, Ourdoor, POIs">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <!--Favicon und stylesheets-->
+        <link rel="icon" href="Favicon.ico.png" type="image/x-icon">
         <link rel="stylesheet" href="style_forest_map.css" type="text/css">
         <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
-
+        <!--Connect to Leaflet-->
         <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
-		<script src="Districts_Salzburg.js" text="javascript"></script>
-        <script src="waldflaechen_clip.js" text="javascript"> // link to this resource: https://www.data.gv.at/katalog/dataset/waldflachen-aus-orthofotos-1-50-000-land-salzburg#resources</script>
+        <!--Import main data as .js-file-->
+        <!--Link to this resource: https://www.data.gv.at/katalog/dataset/waldflachen-aus-orthofotos-1-50-000-land-salzburg#resources-->
+        <script src="waldflaechen_clip.js" text="javascript"></script>
         
     </head>
 
@@ -64,7 +69,6 @@
         }); 
 
 
-
     // POPUPS
     naturpark_salzachauen.bindPopup("<b>Naturpark Salzachauen</b><br>Naherholung</br>");
     festung.bindPopup("<b>Festung Hohensalzburg</b><br>Sehenswürdigkeit</br>");
@@ -85,8 +89,8 @@
         // styling the layer control appearences of the individual basemaps
     var baseMaps = {
     "OpenStreetMap": osm,
-    "<span style='color: red'>OpenStreetMap.HOT</span>": osmHOT,
-    "<span style='color: green'>OpenTopoMap.HOT</span>": openTopoMap
+    "<span style='color: red'>OpenStreetMapSimple</span>": osmHOT,
+    "<span style='color: green'>OpenTopoMap</span>": openTopoMap
     };
 
     var overlayMaps = {
@@ -100,11 +104,9 @@
     L.control.scale({position:'topleft',imperial:true}).addTo(map);
 
 
-
         // adding the functionality to zoom to the features when double-clicking it
         // and highlighting it when hovering the mouse over it
-        
-        
+                
         function highlightFeature(e) {
             var activefeature = e.target;  //access to activefeature that was hovered over through e.target
             
@@ -134,7 +136,7 @@
                 mouseover: highlightFeature,
                 mouseout: resetHighlight,
                 doubleclick: zoomToFeature
-        } );
+        });
         }
 
         // LEGEND        
@@ -145,11 +147,7 @@
         div.innerHTML += "<h4>Legende</h4>";
         div.innerHTML += '<i style="background: #477AC2"></i><span>Points of Interest</span><br>';
         div.innerHTML += '<i style="background: #D34137"></i><span>Forest</span><br>';
-        // div.innerHTML += '<i style="background: #E6E696"></i><span>Land</span><br>';
-        // div.innerHTML += '<i style="background: #E8E6E0"></i><span>Residential</span><br>';
-        // div.innerHTML += '<i style="background: #FFFFFF"></i><span>Ice</span><br>';
-        // div.innerHTML += '<i class="icon" style="background-image: url(https://d30y9cdsu7xlg0.cloudfront.net/png/194515-200.png);background-repeat: no-repeat;"></i><span>Grenze</span><br>';
-        
+                
         return div;
         };
 
@@ -160,4 +158,3 @@
     </body>
 
 </html>
-
